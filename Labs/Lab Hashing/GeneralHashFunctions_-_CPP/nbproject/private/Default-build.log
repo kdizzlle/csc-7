@@ -1,0 +1,2 @@
+c++ -ansi -pedantic -Wall -c GeneralHashFunctions.cpp
+c++ -ansi -pedantic -Wall -o HashTest HashTest.cpp GeneralHashFunctions.o -L/usr/lib -lstdc++
