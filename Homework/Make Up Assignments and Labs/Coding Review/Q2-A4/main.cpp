@@ -17,64 +17,10 @@ using namespace std;
 const int COLMAX=80;//Only 20 required, and 1 for null terminator
 
 //Function Prototypes Here
-int  read(char arr[][COLMAX],int rowDet)//Outputs row and columns detected from input
-{
-    int rows = 0;
-    int cols = 0;
-    string input;
-    int length;
-    
-    for(int i=0; i < rowDet; i++) //while input is less than row input
-    {
-        cin >> input; //get string from user
-        length = input.length(); //record length of input
-        if (length > 0 && length < COLMAX)
-        {//if length is positive and less than max column length
-        strcpy(arr[rows], input.c_str()); //copy to array
-        rows++; //do it again if true
-        if (length > cols) //if length is larger than previous
-        {
-            cols = length; //reset column length
-        }
-        }
-        else
-        {
-            cout << "Input error: too long or too short." << endl;
-        }
-    }
-    rowDet = rows;
-    return cols; //return longest string length
-}
+int  read(char [][COLMAX],int &);//Outputs row and columns detected from input
+void sort(char [][COLMAX],int, int);//Sort by row
+void print(const char [][COLMAX],int,int);//Print the sorted 2-D array
 
-void sort(char arr[][COLMAX],int rows,int cols)//Sort by row
-{
-    char hold[COLMAX];
-    for (int i=0; i < rows; i++)
-    {
-        for (int j = 0; j < rows-1; j++)
-        {
-            if (strcmp(arr[j],arr[j+1])>0)
-            {
-                strcpy(hold, arr[j]);
-                strcpy(arr[j], arr[j+1]);
-                strcpy(arr[j+1], hold);
-            }
-        }
-    }
-}
-
-void print(const char arr[][COLMAX],int rows,int cols)//Print the sorted 2-D array
-{
-    for (int x = 0; x < rows; x++)
-    {
-        for (int y = 0; y < cols; y++)
-        {
-            cout << arr[x][y];
-        }
-        cout << endl;
-    }
-    
-}
 
 //Program Execution Begins Here
 int main(int argc, char** argv) {
@@ -86,26 +32,20 @@ int main(int argc, char** argv) {
     //Input the size of the array you are sorting
     cout<<"Read in a 2 dimensional array of characters and sort by Row"<<endl;
     cout<<"Input the number of rows <= 20"<<endl;
-    cin>>rowIn; //3
+    cin>>rowIn;
     cout<<"Input the maximum number of columns <=20"<<endl;
-    cin>>colIn; //3
+    cin>>colIn;
     
     //Now read in the array of characters and determine it's size
     rowDet=rowIn;
     cout<<"Now input the array."<<endl;
-    //678
-    //567
-    //456
-    colDet=read(array,rowDet); 
-    
+    colDet=read(array,rowDet);
+
     //Compare the size input vs. size detected and sort if same
     //Else output different size
     if(rowDet==rowIn&&colDet==colIn){
         sort(array,rowIn,colIn);
         cout<<"The Sorted Array"<<endl;
-        //456
-        //567
-        //678
         print(array,rowIn,colIn);
     }else{
         if(rowDet!=rowIn)
@@ -118,4 +58,46 @@ int main(int argc, char** argv) {
     
     //Exit
     return 0;
+}
+
+int  read(char arr[][COLMAX],int &row){
+    int col=0;
+    
+    for(int i=0;i<row;i++){
+        cin>>arr[i];
+    }
+    
+    for(int j=0;j<row;j++){
+        if(strlen(arr[j])>col){
+            col=strlen(arr[j]);                
+        }
+    }
+    
+    return col;
+}
+
+
+void sort(char arr[][COLMAX],int row, int col){
+    char tmp[col];
+    
+    for(int i=0;i<row-1;i++) {
+        int min=i;
+        for(int j=i+1;j<row;j++) {
+            if (strcmp(arr[min], arr[j]) > 0) {
+                min=j;
+            }
+        }
+        if (min!=i) {
+            strcpy(tmp, arr[i]);
+            strcpy(arr[i], arr[min]);
+            strcpy(arr[min], tmp);
+        }
+    }
+}
+
+void print(const char arr[][COLMAX],int row,int col){
+    
+    for(int i=0;i<row;i++){
+        cout<<arr[i]<<endl;
+    }
 }

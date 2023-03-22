@@ -6,16 +6,14 @@
 
 /* 
  * File:   main.cpp
- * Author: kelly
- * Purpose: search an array for a value
- * Created on September 18, 2022, 9:05 PM
+ * Author: Kelly Williams
+ * Purpose: Q6-A8 search an array for a value
+ * Created on December 4, 2022, 9:33 PM
  */
 
 //System Libraries Here
-#include <cstdlib>
 #include <iostream>//cin,cout,getline()
 #include <cstring> //strlen()
-#include <string>
 using namespace std;
 
 //User Libraries Here
@@ -29,25 +27,87 @@ using namespace std;
 //srch1 Input->sentence, pattern, start position Output-> position found
 //Remember arrays start at index/position 0
 //srchAll Input->sentence, pattern Output->position array
-int  srch1(const char [],const char [],int);//Search for 1 occurrence
-void srchAll(const string,const string,int []);//Search for all occurrences
-void print(const char []);//Print the character arrays
-void print(const int []); //Print the array of indexes where the pattern found
+int  srch1(const char sntnce[],const char pattern[],int n)
+{
+    int Ltemp, Ptemp;
+    
+    Ltemp = strlen(sntnce);
+    Ptemp = strlen(pattern);
+    
+    for ( int i = n; i <(Ltemp-Ptemp + 1); ++i )
+    {
+        for ( int j = 0; j < Ptemp; j++)
+        {
+            if(sntnce[i+j] != pattern[j]) 
+            {
+                return -1;
+                break;
+            }
+            
+            if(j>=Ptemp) return i;
+        }
+    }
+};//Search for 1 occurrence
+void srchAll(const char sntnce[],const char pattern[],int match[])
+{
+   for(int i = 0; i < 50; ++i)
+        match[i] = -1;
+   
+       string data(sntnce);
+       int j = 0, found = 0;
+       
+       found = data.find(pattern);
+       
+       while(found>= 0)
+       {
+           match[j++] = found;
+           found = data.find(pattern,found+1);
+       }
+       
+   
+};//Search for all occurrences
+void print(const char sntnce[])
+{
+    cout << sntnce;
+    cout << endl;
+    
+};//Print the character arrays
+void print(const int match[])
+{
+    
+    if (match[0]==-1)
+    {
+        cout << "None" << endl;
+        return ;
+    }
+    else
+    {
+        int i = 0;
+    while(match[i] >= 0)
+      { cout << match[i] << endl;
+      
+          i++;
+      }
+     
+     
+    }
+}; //Print the array of indexes where the pattern found
 
 //Program Execution Begins Here
 int main(int argc, char** argv) {
     //Declare all Variables Here
     const int LINE=81;               //Size of sentence or pattern to find
-    string sntnce,pattern; //80 + null terminator
+    char sntnce[LINE],pattern[LINE]; //80 + null terminator
     int match[LINE];                 //Index array where pattern was found
     
     //Input a sentence and a pattern to match
     cout<<"Match a pattern in a sentence."<<endl;
     cout<<"Input a sentence"<<endl;
-    getline(cin,sntnce);
+    cin.getline(sntnce,LINE);
     cout<<"Input a pattern."<<endl;
-    getline(cin,pattern);
+    cin.getline(pattern,LINE);
     
+ 
     //Search for the pattern
     //Input the sentence and pattern, Output the matching positions
     //Remember, indexing starts at 0 for arrays.
@@ -55,48 +115,11 @@ int main(int argc, char** argv) {
     
     //Display the inputs and the Outputs
     cout<<endl<<"The sentence and the pattern"<<endl;
-    cout << sntnce << endl;
-    cout << pattern << endl;
+    print(sntnce);
+    print(pattern);
     cout<<"The positions where the pattern matched"<<endl;
     print(match);
     
     //Exit
     return 0;
-}
-
-
-void srchAll(const string sntnce,const string pattern,int match[])
-{
-    
-    int pos=0;
-    
-    for (int i=0; i < sntnce.length() - pattern.length() + 1); i++)
-    {
-        if(sntence.substr (i, lenP) == pattern)
-        {
-            
-        }
-    }
-}
-
-void print(const char str[])
-{
-    for (int i=0; str[i] != ' '; i++)
-        cout << str[i];
-    cout << endl;
-}
-
-void print(const int match[])
-{
-    if(match[0] == -1)
-    {
-        cout << " None" << endl;
-        return;
-    }
-    
-    cout << endl;
-    for (int i=0; match[i] != -1; i++)
-    {
-        cout << "Pattern found at index " << match[i]+1 << endl;
-    }
 }
